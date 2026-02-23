@@ -58,9 +58,7 @@ Then start Claude Code and run:
 /setup-notion https://notion.so/your-page-url
 ```
 
-This will automatically create three linked databases (Opportunities, Meeting Notes, Prep & Debriefs) inside that page and write their IDs to `context/config.json`.
-
-
+This will automatically create three linked databases (Opportunities, Meeting Notes, Prep & Debriefs) inside that page and write their IDs to `context/config.json`. Once these are created, if you'd like you can edit the relational Notion columns to be "two-way relations."
 
 Prefer to create the databases manually?
 
@@ -106,8 +104,6 @@ Create three databases with these schemas:
 
 
 Then open each database → `...` → `Connections` → add your integration, and paste the database IDs into `context/config.json`.
-
-
 
 ### 5. Add your profile
 
