@@ -25,7 +25,7 @@ Slash commands for every step of the job search:
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/yourusername/job-search-toolkit
+git clone https://github.com/huangybrandon/job-search-toolkit
 cd job-search-toolkit
 npm install
 ```

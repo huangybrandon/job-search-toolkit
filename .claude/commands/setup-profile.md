@@ -5,7 +5,8 @@ The user may optionally provide their target role type in the arguments (e.g. "C
 Follow these steps:
 
 **1. Gather inputs**
-- Read `context/resume.md`. If it doesn't exist, tell the user to copy `context/resume.example.md` to `context/resume.md` and paste their resume in, then stop.
+- Read `context/resume.md`. If it doesn't exist or is empty (only contains the placeholder text from the example), stop and tell the user:
+  "Copy context/resume.example.md to context/resume.md and paste your resume content into it. Plain text or markdown both work — include your job history with titles, company names, dates, and any accomplishments or metrics. Then run /setup-profile again."
 - Check for any performance review files in `context/` (e.g. `context/performance_reviews.md` or any file matching `context/performance_reviews*.md`). Read them if present — they are optional.
 
 **2. Generate profile**

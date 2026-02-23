@@ -199,16 +199,17 @@ if (require.main === module) {
     const personName = process.argv[4];
     const contentFile = process.argv[5];
     const type = process.argv[6] || "Prep";
+    const meetingNoteId = process.argv[7] || null;
 
     if (!companyName || !personName || !contentFile) {
       console.error(
-        "Usage: node write-to-notion.js write <company> <person-name> <file.md> [Prep|Debrief]"
+        "Usage: node write-to-notion.js write <company> <person-name> <file.md> [Prep|Debrief] [meeting-note-id]"
       );
       process.exit(1);
     }
 
     const content = fs.readFileSync(contentFile, "utf-8");
-    writeToCompanyPage(companyName, content, type, personName)
+    writeToCompanyPage(companyName, content, type, personName, meetingNoteId)
       .then(({ url }) => {
         console.log(`Done. Page: ${url}`);
         process.exit(0);
@@ -232,7 +233,8 @@ if (require.main === module) {
     const content = fs.readFileSync(contentFile, "utf-8");
     const date = new Date().toISOString().split("T")[0];
     writeMeetingNotes(companyName, personName, date, content)
-      .then(({ url }) => {
+      .then(({ pageId, url }) => {
+        console.log(`Meeting note ID: ${pageId}`);
         console.log(`Done. Page: ${url}`);
         process.exit(0);
       })

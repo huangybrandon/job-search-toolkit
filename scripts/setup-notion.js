@@ -73,7 +73,7 @@ async function createOpportunitiesDb(notion, parent) {
         "Applied Date": { date: {} },
         "Comp Range": { rich_text: {} },
         Notes: { rich_text: {} },
-        "Key People": { rich_text: {} },
+        "Key people": { rich_text: {} },
         "JD Link": { url: {} },
       },
     },
