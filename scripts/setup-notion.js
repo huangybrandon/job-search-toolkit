@@ -98,8 +98,8 @@ async function createMeetingNotesDb(notion, parent, opportunitiesDataSourceId) {
         Opportunity: {
           relation: {
             data_source_id: opportunitiesDataSourceId,
-            type: "single_property",
-            single_property: {},
+            type: "dual_property",
+            dual_property: {},
           },
         },
       },
@@ -131,15 +131,15 @@ async function createPrepDebriefsDb(notion, parent, opportunitiesDataSourceId, m
         Opportunity: {
           relation: {
             data_source_id: opportunitiesDataSourceId,
-            type: "single_property",
-            single_property: {},
+            type: "dual_property",
+            dual_property: {},
           },
         },
         "Meeting Notes": {
           relation: {
             data_source_id: meetingNotesDataSourceId,
-            type: "single_property",
-            single_property: {},
+            type: "dual_property",
+            dual_property: {},
           },
         },
       },
