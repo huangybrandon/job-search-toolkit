@@ -6,7 +6,7 @@ A Claude Code-powered job search assistant that integrates with Notion and Grano
 
 Slash commands for every step of the job search:
 
-- **`/setup-notion`** — One-time setup: automatically creates the three Notion databases and configures `context/config.json`
+- **`/setup-notion`** — One-time setup: automatically creates three Notion databases (Opportunities, Meeting Notes, Prep & Debriefs) and configures `context/config.json`
 - **`/setup-profile`** — One-time setup: generates `context/profile.md` from your resume and performance reviews
 - **`/prep`** — Generate a prep doc for an upcoming interview: smart questions to ask + anticipated questions with suggested answers, grounded in your profile and the job description
 - **`/debrief`** — After a call, pull the meeting notes from Granola, save them to Notion, and generate a structured debrief with key takeaways, self-assessment, and follow-up actions
@@ -33,7 +33,7 @@ npm install
 ### 2. Create a Notion integration
 
 1. Go to [https://www.notion.so/profile/integrations/internal](https://www.notion.so/profile/integrations/internal)
-2. Click **New integration**, give it a name (e.g. "Job Search Toolkit"), set type to **Internal**
+2. Click **New integration**, give it a name (e.g. "Job Search Toolkit")
 3. Copy the **Internal Integration Secret** (starts with `ntn_...`)
 
 ### 3. Configure your API key
@@ -176,6 +176,8 @@ Then use the slash commands:
 ```
 
 ## How it works
+
+Add job opportunities you come across to the **Opportunities** Notion database. If you can, paste the job description into the page body, and fill out any other relevant properties/columns. Then you can start using the above slash commands as you go about your job search - the Notion pages will be automatically populated with meeting notes, prep, and debrief docs.
 
 Each command is a skill file in `.claude/commands/`. When you run `/prep`, Claude Code loads the skill prompt and executes the full workflow: refreshing tracker data, reading your profile, fetching the JD from Notion, generating prep content using the prompt templates in `prompts/`, saving locally to `output/`, and writing to Notion.
 
