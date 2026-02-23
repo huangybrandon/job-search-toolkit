@@ -6,12 +6,12 @@ A Claude Code-powered job search assistant that integrates with Notion and Grano
 
 Slash commands for every step of the job search:
 
-- **`/setup-notion`** — One-time setup: automatically creates the three Notion databases and configures `context/config.json`
-- **`/setup-profile`** — One-time setup: generates `context/profile.md` from your resume and performance reviews
-- **`/prep`** — Generate a prep doc for an upcoming interview: smart questions to ask + anticipated questions with suggested answers, grounded in your profile and the job description
-- **`/debrief`** — After a call, pull the meeting notes from Granola, save them to Notion, and generate a structured debrief with key takeaways, self-assessment, and follow-up actions
-- **`/outreach`** — Draft a concise, specific cold outreach email or cover letter tailored to a role
-- **`/find`** — Search your Notion job tracker by company or role name
+- `**/setup-notion**` — One-time setup: automatically creates the three Notion databases and configures `context/config.json`
+- `**/setup-profile**` — One-time setup: generates `context/profile.md` from your resume and performance reviews
+- `**/prep**` — Generate a prep doc for an upcoming interview: smart questions to ask + anticipated questions with suggested answers, grounded in your profile and the job description
+- `**/debrief**` — After a call, pull the meeting notes from Granola, save them to Notion, and generate a structured debrief with key takeaways, self-assessment, and follow-up actions
+- `**/outreach**` — Draft a concise, specific cold outreach email or cover letter tailored to a role
+- `**/find**` — Search your Notion job tracker by company or role name
 
 ## Prerequisites
 
@@ -32,7 +32,7 @@ npm install
 
 ### 2. Create a Notion integration
 
-1. Go to [notion.so/my-integrations](https://www.notion.so/my-integrations)
+1. Go to [https://www.notion.so/profile/integrations/internal](https://www.notion.so/profile/integrations/internal)
 2. Click **New integration**, give it a name (e.g. "Job Search Toolkit"), set type to **Internal**
 3. Copy the **Internal Integration Secret** (starts with `ntn_...`)
 
@@ -43,65 +43,71 @@ cp .env.example .env
 ```
 
 Edit `.env` and paste your key:
+
 ```
 NOTION_API_KEY=ntn_your_key_here
 ```
 
 ### 4. Create the Notion databases
 
-Start Claude Code and run:
-```
-/setup-notion
-```
+First, create a page in Notion to house the databases (e.g. "Job Search"). Then share it with your integration: open the page → `...` → `Connections` → add your integration.
 
-This will automatically create three linked databases (Opportunities, Meeting Notes, Prep & Debriefs) in your Notion workspace and write their IDs to `context/config.json`. No manual database creation needed.
+Then start Claude Code and run:
 
-<details>
-<summary>Want to create them inside a specific Notion page instead of the workspace root?</summary>
-
-Share the page with your integration first (open the page → `...` → `Connections` → add your integration), then run:
 ```
 /setup-notion https://notion.so/your-page-url
 ```
-</details>
 
-<details>
-<summary>Prefer to create the databases manually?</summary>
+This will automatically create three linked databases (Opportunities, Meeting Notes, Prep & Debriefs) inside that page and write their IDs to `context/config.json`.
+
+
+
+Prefer to create the databases manually?
 
 Create three databases with these schemas:
 
 **Opportunities**
-| Property | Type |
-|---|---|
-| Company | Title |
-| Role | Text |
-| Company Description | Text |
-| Role Type | Select |
-| Status | Status |
-| Applied Date | Date |
-| Comp Range | Text |
-| Notes | Text |
-| Key people | Text |
-| JD Link | URL |
+
+
+| Property            | Type   |
+| ------------------- | ------ |
+| Company             | Title  |
+| Role                | Text   |
+| Company Description | Text   |
+| Role Type           | Select |
+| Status              | Status |
+| Applied Date        | Date   |
+| Comp Range          | Text   |
+| Notes               | Text   |
+| Key people          | Text   |
+| JD Link             | URL    |
+
 
 **Meeting Notes**
-| Property | Type |
-|---|---|
-| Meeting Title | Title |
-| Date | Date |
-| Opportunity | Relation → Opportunities |
+
+
+| Property      | Type                     |
+| ------------- | ------------------------ |
+| Meeting Title | Title                    |
+| Date          | Date                     |
+| Opportunity   | Relation → Opportunities |
+
 
 **Prep & Debriefs**
-| Property | Type |
-|---|---|
-| Title | Title |
-| Type | Select (Prep, Debrief) |
-| Date | Date |
-| Opportunity | Relation → Opportunities |
+
+
+| Property      | Type                     |
+| ------------- | ------------------------ |
+| Title         | Title                    |
+| Type          | Select (Prep, Debrief)   |
+| Date          | Date                     |
+| Opportunity   | Relation → Opportunities |
 | Meeting Notes | Relation → Meeting Notes |
 
+
 Then open each database → `...` → `Connections` → add your integration, and paste the database IDs into `context/config.json`.
-</details>
+
+
 
 ### 5. Add your profile
 
@@ -110,6 +116,7 @@ Then open each database → `...` → `Connections` → add your integration, an
 **Option A: Auto-generate (recommended)**
 
 Paste your resume into `context/resume.md`:
+
 ```bash
 cp context/resume.example.md context/resume.md
 # paste your resume content into context/resume.md
@@ -118,6 +125,7 @@ cp context/resume.example.md context/resume.md
 Optionally paste any performance review content into `context/performance_reviews.md`.
 
 Then run (the role type is optional but improves output):
+
 ```
 /setup-profile Chief of Staff
 ```
@@ -125,6 +133,7 @@ Then run (the role type is optional but improves output):
 Claude will generate a structured `context/profile.md`. Review it and fill in any `[FILL IN: ...]` placeholders — particularly the "What I'm Looking For" section.
 
 **Option B: Fill in manually**
+
 ```bash
 cp context/profile.example.md context/profile.md
 # edit context/profile.md following the template
@@ -148,6 +157,7 @@ Should print "Fetched 0 entries from Notion." — zero rows is expected for a fr
 ## Usage
 
 Start Claude Code in the project directory:
+
 ```bash
 claude
 ```

@@ -5,9 +5,11 @@
  * their IDs to context/config.json.
  *
  * Usage:
- *   node scripts/setup-notion.js               # create at workspace root
- *   node scripts/setup-notion.js <page-url>    # create inside a specific page
- *   node scripts/setup-notion.js <page-id>     # create inside a specific page
+ *   node scripts/setup-notion.js <page-url>    # create inside a Notion page
+ *   node scripts/setup-notion.js <page-id>     # create inside a Notion page
+ *
+ * Note: internal Notion integrations require a parent page.
+ * Create a page, share it with your integration, then pass its URL here.
  */
 
 const path = require("path");
@@ -174,23 +176,28 @@ async function main() {
     }
   }
 
-  // Determine parent
+  // Determine parent — internal integrations require a parent page
   const input = process.argv[2];
-  let parent;
 
-  if (input) {
-    const pageId = extractId(input);
-    if (!pageId) {
-      console.error(`Error: Could not parse a Notion page ID from: ${input}`);
-      console.error("Provide a Notion page URL or a 32-character page ID.");
-      process.exit(1);
-    }
-    parent = { type: "page_id", page_id: pageId };
-    console.log(`Creating databases inside page: ${pageId}\n`);
-  } else {
-    parent = { type: "workspace", workspace: true };
-    console.log("Creating databases at workspace root.\n");
+  if (!input) {
+    console.error("Error: A parent page is required.");
+    console.error("");
+    console.error("  1. Create a page in Notion (e.g. 'Job Search')");
+    console.error("  2. Open the page → '...' → Connections → add your integration");
+    console.error("  3. Copy the page URL and run:");
+    console.error("       node scripts/setup-notion.js https://notion.so/your-page-url");
+    process.exit(1);
   }
+
+  const pageId = extractId(input);
+  if (!pageId) {
+    console.error(`Error: Could not parse a Notion page ID from: ${input}`);
+    console.error("Provide a Notion page URL or a 32-character page ID.");
+    process.exit(1);
+  }
+
+  const parent = { type: "page_id", page_id: pageId };
+  console.log(`Creating databases inside page: ${pageId}\n`);
 
   const notion = new Client({ auth: apiKey });
 
