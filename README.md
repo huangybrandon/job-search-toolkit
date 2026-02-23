@@ -6,12 +6,12 @@ A Claude Code-powered job search assistant that integrates with Notion and Grano
 
 Slash commands for every step of the job search:
 
-- `**/setup-notion**` — One-time setup: automatically creates the three Notion databases and configures `context/config.json`
-- `**/setup-profile**` — One-time setup: generates `context/profile.md` from your resume and performance reviews
-- `**/prep**` — Generate a prep doc for an upcoming interview: smart questions to ask + anticipated questions with suggested answers, grounded in your profile and the job description
-- `**/debrief**` — After a call, pull the meeting notes from Granola, save them to Notion, and generate a structured debrief with key takeaways, self-assessment, and follow-up actions
-- `**/outreach**` — Draft a concise, specific cold outreach email or cover letter tailored to a role
-- `**/find**` — Search your Notion job tracker by company or role name
+- **`/setup-notion`** — One-time setup: automatically creates the three Notion databases and configures `context/config.json`
+- **`/setup-profile`** — One-time setup: generates `context/profile.md` from your resume and performance reviews
+- **`/prep`** — Generate a prep doc for an upcoming interview: smart questions to ask + anticipated questions with suggested answers, grounded in your profile and the job description
+- **`/debrief`** — After a call, pull the meeting notes from Granola, save them to Notion, and generate a structured debrief with key takeaways, self-assessment, and follow-up actions
+- **`/outreach`** — Draft a concise, specific cold outreach email or cover letter tailored to a role
+- **`/find`** — Search your Notion job tracker by company or role name
 
 ## Prerequisites
 
