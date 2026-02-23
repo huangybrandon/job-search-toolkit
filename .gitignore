@@ -1,0 +1,19 @@
+# Secrets
+.env
+
+# Personal context (use the .example files as templates)
+context/profile.md
+context/resume.md
+context/performance_reviews*.md
+
+# Auto-generated tracker snapshots
+context/sheet-data.json
+context/sheet-data.md
+
+# Generated output
+output/
+
+# Misc
+node_modules/
+.DS_Store
+.claude/settings.local.json

@@ -1,0 +1,7 @@
+{
+  "notion": {
+    "companies_db_id": "YOUR_OPPORTUNITIES_DATABASE_ID",
+    "meeting_notes_db_id": "YOUR_MEETING_NOTES_DATABASE_ID",
+    "prep_debriefs_db_id": "YOUR_PREP_DEBRIEFS_DATABASE_ID"
+  }
+}
