@@ -6,7 +6,8 @@ A Claude Code-powered job search assistant. Workflows are exposed as slash comma
 
 | Command | What it does |
 |---|---|
-| `/setup-profile [target role]` | Generate context/profile.md from your resume and performance reviews |
+| `/setup-notion [page-url]` | Create all three Notion databases and write IDs to context/config.json |
+| `/setup-profile [target role]` | Generate context/profile.md from resume and performance reviews |
 | `/prep [Company] [Person] [Stage]` | Generate interview prep: questions to ask + anticipated questions |
 | `/debrief [Company] [Person]` | Pull Granola meeting notes, generate structured debrief, save to Notion |
 | `/outreach [Company]` | Draft cold outreach email or cover letter |

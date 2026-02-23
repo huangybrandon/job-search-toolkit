@@ -4,9 +4,10 @@ A Claude Code-powered job search assistant that integrates with Notion and Grano
 
 ## What it does
 
-Five slash commands, each running a complete workflow:
+Slash commands for every step of the job search:
 
-- **`/setup-profile`** — One-time setup: generate `context/profile.md` from your resume and performance reviews
+- **`/setup-notion`** — One-time setup: automatically creates the three Notion databases and configures `context/config.json`
+- **`/setup-profile`** — One-time setup: generates `context/profile.md` from your resume and performance reviews
 - **`/prep`** — Generate a prep doc for an upcoming interview: smart questions to ask + anticipated questions with suggested answers, grounded in your profile and the job description
 - **`/debrief`** — After a call, pull the meeting notes from Granola, save them to Notion, and generate a structured debrief with key takeaways, self-assessment, and follow-up actions
 - **`/outreach`** — Draft a concise, specific cold outreach email or cover letter tailored to a role
@@ -14,10 +15,10 @@ Five slash commands, each running a complete workflow:
 
 ## Prerequisites
 
-- [Claude Code](https://docs.anthropic.com/claude-code) installed (`npm install -g @anthropic/claude-code`)
-- A [Notion](https://notion.so) workspace with the three databases set up (see below)
-- The [Granola](https://granola.so) desktop app for meeting notes (optional — only needed for `/debrief`)
-- Node.js 18+
+- [Claude Code](https://claude.ai/code) installed
+- A [Notion](https://notion.so) account (free tier works)
+- [Node.js](https://nodejs.org) 18+
+- The [Granola](https://granola.so) desktop app (optional — only needed for `/debrief`)
 
 ## Setup
 
@@ -29,11 +30,47 @@ cd job-search-toolkit
 npm install
 ```
 
-### 2. Set up Notion
+### 2. Create a Notion integration
 
-You need three Notion databases. You can duplicate this template: [coming soon] or create them manually with these schemas:
+1. Go to [notion.so/my-integrations](https://www.notion.so/my-integrations)
+2. Click **New integration**, give it a name (e.g. "Job Search Toolkit"), set type to **Internal**
+3. Copy the **Internal Integration Secret** (starts with `ntn_...`)
 
-**Opportunities** (job tracker)
+### 3. Configure your API key
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and paste your key:
+```
+NOTION_API_KEY=ntn_your_key_here
+```
+
+### 4. Create the Notion databases
+
+Start Claude Code and run:
+```
+/setup-notion
+```
+
+This will automatically create three linked databases (Opportunities, Meeting Notes, Prep & Debriefs) in your Notion workspace and write their IDs to `context/config.json`. No manual database creation needed.
+
+<details>
+<summary>Want to create them inside a specific Notion page instead of the workspace root?</summary>
+
+Share the page with your integration first (open the page → `...` → `Connections` → add your integration), then run:
+```
+/setup-notion https://notion.so/your-page-url
+```
+</details>
+
+<details>
+<summary>Prefer to create the databases manually?</summary>
+
+Create three databases with these schemas:
+
+**Opportunities**
 | Property | Type |
 |---|---|
 | Company | Title |
@@ -63,83 +100,50 @@ You need three Notion databases. You can duplicate this template: [coming soon] 
 | Opportunity | Relation → Opportunities |
 | Meeting Notes | Relation → Meeting Notes |
 
-After creating the databases:
-1. Go to [notion.so/my-integrations](https://www.notion.so/my-integrations) and create a new integration
-2. Copy the API key
-3. Open each database → click `...` → `Connections` → add your integration
-4. Copy the database IDs from each database URL (the 32-character hex string)
+Then open each database → `...` → `Connections` → add your integration, and paste the database IDs into `context/config.json`.
+</details>
 
-### 3. Configure
+### 5. Add your profile
 
-```bash
-cp .env.example .env
-```
+`context/profile.md` grounds every prep doc, debrief, and outreach draft in your actual background.
 
-Edit `.env` and add your Notion API key:
-```
-NOTION_API_KEY=your_key_here
-```
+**Option A: Auto-generate (recommended)**
 
-Edit `context/config.json` and add your database IDs:
-```json
-{
-  "notion": {
-    "companies_db_id": "your_opportunities_db_id",
-    "meeting_notes_db_id": "your_meeting_notes_db_id",
-    "prep_debriefs_db_id": "your_prep_debriefs_db_id"
-  }
-}
-```
-
-### 4. Add your profile
-
-`context/profile.md` is the most important input — it grounds every prep doc, debrief, and outreach draft in your actual background. You have two options:
-
-**Option A: Auto-generate from your resume (recommended)**
-
+Paste your resume into `context/resume.md`:
 ```bash
 cp context/resume.example.md context/resume.md
-# Paste your resume into context/resume.md
+# paste your resume content into context/resume.md
 ```
 
-Optionally, add performance review content:
-```bash
-# Paste any perf review text into context/performance_reviews.md
-```
+Optionally paste any performance review content into `context/performance_reviews.md`.
 
-Then start Claude Code and run:
+Then run (the role type is optional but improves output):
 ```
 /setup-profile Chief of Staff
 ```
 
-Claude will analyze your resume and reviews and write a structured `context/profile.md`. Review the output and fill in any `[FILL IN: ...]` placeholders — particularly the "What I'm Looking For" section, which requires your own judgment.
+Claude will generate a structured `context/profile.md`. Review it and fill in any `[FILL IN: ...]` placeholders — particularly the "What I'm Looking For" section.
 
 **Option B: Fill in manually**
-
 ```bash
 cp context/profile.example.md context/profile.md
+# edit context/profile.md following the template
 ```
 
-Edit `context/profile.md` following the template. The key sections are: work history with metrics, 3-5 key interview stories mapped to themes, and what you're optimizing for in your next role.
+### 6. Set up Granola MCP (for `/debrief`)
 
-### 5. Set up Granola MCP (for `/debrief`)
-
-The `/debrief` command uses the Granola MCP server to pull meeting notes. To enable it:
+The `/debrief` command pulls meeting notes from Granola. To enable it:
 
 1. Install [Granola](https://granola.so) and sign in
-2. Add the Granola MCP to Claude Code:
-   ```bash
-   claude mcp add granola
-   ```
-   Or follow [Granola's MCP setup guide](https://granola.so/docs/mcp).
+2. Add the Granola MCP to Claude Code — follow [Granola's MCP setup guide](https://granola.so)
 
-### 6. Test the connection
+### 7. Verify
 
 ```bash
 node scripts/fetch-tracker.js
 ```
 
-This should fetch your Opportunities database and save a snapshot to `context/sheet-data.json`.
+Should print "Fetched 0 entries from Notion." — zero rows is expected for a fresh database.
 
 ## Usage
 
@@ -152,6 +156,7 @@ Then use the slash commands:
 
 ```
 # First-time setup
+/setup-notion
 /setup-profile Chief of Staff
 
 # Daily use
@@ -162,18 +167,16 @@ Then use the slash commands:
 /find acme
 ```
 
-You can also use natural language — Claude knows the workflows from `CLAUDE.md`.
-
 ## How it works
 
-Each command is a skill file in `.claude/commands/`. When you run `/prep`, Claude Code loads the skill prompt and executes the workflow: refreshing tracker data, reading your profile, fetching the JD from Notion, generating prep content using the prompt templates in `prompts/`, saving locally to `output/`, and writing to Notion.
+Each command is a skill file in `.claude/commands/`. When you run `/prep`, Claude Code loads the skill prompt and executes the full workflow: refreshing tracker data, reading your profile, fetching the JD from Notion, generating prep content using the prompt templates in `prompts/`, saving locally to `output/`, and writing to Notion.
 
-All personal files (`context/profile.md`, `context/resume.md`, `output/`) are gitignored so you can fork this repo and use it privately without worrying about accidentally pushing personal data.
+All personal files (`context/profile.md`, `context/resume.md`, `output/`, `.env`) are gitignored — fork this repo and use it privately without worrying about accidentally pushing personal data.
 
 ## File structure
 
 ```
-.claude/commands/     - Skill definitions (/prep, /debrief, /outreach, /find)
+.claude/commands/     - Skill definitions (/setup-notion, /setup-profile, /prep, etc.)
 context/              - Config and personal data
 prompts/              - Prompt templates
 scripts/              - Node.js scripts for Notion integration
