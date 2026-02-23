@@ -6,6 +6,7 @@ A Claude Code-powered job search assistant. Workflows are exposed as slash comma
 
 | Command | What it does |
 |---|---|
+| `/setup-profile [target role]` | Generate context/profile.md from your resume and performance reviews |
 | `/prep [Company] [Person] [Stage]` | Generate interview prep: questions to ask + anticipated questions |
 | `/debrief [Company] [Person]` | Pull Granola meeting notes, generate structured debrief, save to Notion |
 | `/outreach [Company]` | Draft cold outreach email or cover letter |
@@ -15,12 +16,16 @@ A Claude Code-powered job search assistant. Workflows are exposed as slash comma
 
 ```
 context/          - Config and candidate data (personal files are gitignored)
-  config.json     - Notion database IDs
-  profile.md      - Your background, stories, and search preferences (gitignored)
-  resume.md       - Your resume in markdown (gitignored)
-  sheet-data.json - Cached tracker snapshot (auto-generated, gitignored)
+  config.json              - Notion database IDs
+  profile.md               - Your background and stories (gitignored; generate with /setup-profile)
+  profile.example.md       - Template for profile.md
+  resume.md                - Your resume in markdown (gitignored)
+  resume.example.md        - Template for resume.md
+  performance_reviews*.md  - Optional perf review files (gitignored)
+  sheet-data.json          - Cached tracker snapshot (auto-generated, gitignored)
 
 prompts/          - Prompt templates used by the skills
+  generate-profile.md
   interview-questions.md
   anticipated-questions.md
   debrief-summary.md

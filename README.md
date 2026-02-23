@@ -4,8 +4,9 @@ A Claude Code-powered job search assistant that integrates with Notion and Grano
 
 ## What it does
 
-Four slash commands, each running a complete workflow:
+Five slash commands, each running a complete workflow:
 
+- **`/setup-profile`** — One-time setup: generate `context/profile.md` from your resume and performance reviews
 - **`/prep`** — Generate a prep doc for an upcoming interview: smart questions to ask + anticipated questions with suggested answers, grounded in your profile and the job description
 - **`/debrief`** — After a call, pull the meeting notes from Granola, save them to Notion, and generate a structured debrief with key takeaways, self-assessment, and follow-up actions
 - **`/outreach`** — Draft a concise, specific cold outreach email or cover letter tailored to a role
@@ -92,16 +93,34 @@ Edit `context/config.json` and add your database IDs:
 
 ### 4. Add your profile
 
+`context/profile.md` is the most important input — it grounds every prep doc, debrief, and outreach draft in your actual background. You have two options:
+
+**Option A: Auto-generate from your resume (recommended)**
+
+```bash
+cp context/resume.example.md context/resume.md
+# Paste your resume into context/resume.md
+```
+
+Optionally, add performance review content:
+```bash
+# Paste any perf review text into context/performance_reviews.md
+```
+
+Then start Claude Code and run:
+```
+/setup-profile Chief of Staff
+```
+
+Claude will analyze your resume and reviews and write a structured `context/profile.md`. Review the output and fill in any `[FILL IN: ...]` placeholders — particularly the "What I'm Looking For" section, which requires your own judgment.
+
+**Option B: Fill in manually**
+
 ```bash
 cp context/profile.example.md context/profile.md
 ```
 
-Edit `context/profile.md` with your background, work history, key stories, and what you're looking for. This is the most important input — the richer it is, the more relevant the output.
-
-Optionally:
-```bash
-cp context/resume.example.md context/resume.md
-```
+Edit `context/profile.md` following the template. The key sections are: work history with metrics, 3-5 key interview stories mapped to themes, and what you're optimizing for in your next role.
 
 ### 5. Set up Granola MCP (for `/debrief`)
 
@@ -132,6 +151,10 @@ claude
 Then use the slash commands:
 
 ```
+# First-time setup
+/setup-profile Chief of Staff
+
+# Daily use
 /prep Acme Corp
 /prep Acme Corp, Jane Smith, hiring manager round
 /debrief Acme Corp, Jane Smith
