@@ -81,7 +81,7 @@ Create three databases with these schemas:
 | Applied Date | Date |
 | Comp Range | Text |
 | Notes | Text |
-| Key People | Text |
+| Key people | Text |
 | JD Link | URL |
 
 **Meeting Notes**

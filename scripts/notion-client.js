@@ -5,7 +5,14 @@ const { Client } = require("@notionhq/client");
 require("dotenv").config({ path: path.join(__dirname, "..", ".env") });
 
 const CONFIG_PATH = path.join(__dirname, "..", "context", "config.json");
-const config = require(CONFIG_PATH);
+let config;
+try {
+  config = require(CONFIG_PATH);
+} catch {
+  throw new Error(
+    "context/config.json not found or invalid. Run /setup-notion in Claude Code to create your Notion databases, or fill in the database IDs manually."
+  );
+}
 
 const apiKey = process.env.NOTION_API_KEY;
 if (!apiKey) {

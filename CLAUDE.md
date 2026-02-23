@@ -47,7 +47,7 @@ output/           - Generated prep docs and debriefs (gitignored)
 Three databases, all linked:
 
 1. **Opportunities** — one row per role
-   - Fields: Company (title), Role, Company Description, Role Type, Status, Applied Date, Comp Range, Notes, Key People, JD Link
+   - Fields: Company (title), Role, Company Description, Role Type, Status, Applied Date, Comp Range, Notes, Key people, JD Link
    - Page body: full job description text
    - Relations: Meeting Notes, Prep & Debriefs
 
